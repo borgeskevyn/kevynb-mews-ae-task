@@ -1,0 +1,20 @@
+version: 2
+
+models:
+  - name: stg_territories
+    description: One row per territory, grouped into region and country_group.
+    columns:
+      - name: territory_id
+        description: Territory code, primary key.
+        tests:
+          - unique
+          - not_null
+
+      - name: territory_description
+        description: Human-readable name of the territory.
+
+      - name: region
+        description: Broader geographic region the territory belongs to (e.g. EMEA, AMER, APAC).
+
+      - name: country_group
+        description: Grouping of the territory's country for reporting purposes (e.g. EU, Non-EU).

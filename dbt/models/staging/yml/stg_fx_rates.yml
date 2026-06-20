@@ -1,0 +1,25 @@
+version: 2
+
+models:
+  - name: stg_fx_rates
+    description: >
+      One row per (month, currency) FX rate to EUR. `rate_to_eur` for currency
+      EUR is always 1. Joins to ledger lines on month + transaction currency.
+    columns:
+      - name: fx_month
+        description: Source month string, format YYYY-MM.
+        tests:
+          - not_null
+
+      - name: currency
+        description: ISO currency code the rate applies to.
+        tests:
+          - not_null
+
+      - name: fx_month_date
+        description: fx_month cast to the first calendar day of that month, for date-based joins.
+
+      - name: rate_to_eur
+        description: Multiplier to convert one unit of currency into EUR for this month.
+        tests:
+          - not_null

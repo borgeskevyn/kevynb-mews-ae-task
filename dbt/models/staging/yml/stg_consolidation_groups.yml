@@ -1,0 +1,20 @@
+version: 2
+
+models:
+  - name: stg_consolidation_groups
+    description: One row per consolidation group used for GL roll-ups.
+    columns:
+      - name: consolidation_group_id
+        description: Consolidation group code, primary key.
+        tests:
+          - unique
+          - not_null
+
+      - name: lead_entity_id
+        description: Entity code of the lead/parent entity for this consolidation group.
+
+      - name: consolidation_group_description
+        description: Human-readable name of the consolidation group.
+
+      - name: group_type
+        description: Whether the consolidation group is Internal or External.

@@ -1,0 +1,32 @@
+version: 2
+
+models:
+  - name: stg_journal_entries
+    description: One row per journal entry (header-level metadata, no amounts).
+    columns:
+      - name: journal_id
+        description: Journal entry ID, primary key.
+        tests:
+          - unique
+          - not_null
+
+      - name: source_system
+        description: System the journal entry originated from (e.g. BC for Business Central).
+
+      - name: posted_by
+        description: User or process that posted the journal entry.
+
+      - name: journal_status
+        description: >
+          Posting status of the journal. Only "posted" journals represent
+          finalised, reportable activity — "unposted" and "error" journals
+          should be excluded from any P&L total unless a stakeholder
+          explicitly wants to see in-flight/exception activity.
+        tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ["posted", "unposted", "error"]
+
+      - name: posted_at
+        description: Timestamp the journal entry was posted.

@@ -1,0 +1,52 @@
+version: 2
+
+models:
+  - name: fct_pnl_monthly
+    description: >
+      One row per (entity, territory, month) — revenue, expense and net P&L
+      in EUR. Built only from posted journals and P&L (Revenue/Expense)
+      accounts; Balance Sheet activity and unposted/error journals are
+      excluded by construction.
+    columns:
+      - name: entity_id
+        description: Legal/reporting entity the P&L figures are booked under.
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_entity_codes')
+                field: entity_id
+
+      - name: territory_id
+        description: Territory the P&L figures are attributed to.
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_territories')
+                field: territory_id
+
+      - name: pnl_month
+        description: First calendar day of the month this row summarises.
+        tests:
+          - not_null
+
+      - name: revenue_eur
+        description: Sum of Revenue-account ledger lines for this entity/territory/month, in EUR.
+        tests:
+          - not_null
+
+      - name: expense_eur
+        description: Sum of Expense-account ledger lines for this entity/territory/month, in EUR.
+        tests:
+          - not_null
+
+      - name: net_eur
+        description: revenue_eur minus expense_eur for this entity/territory/month.
+        tests:
+          - not_null
+
+      - name: ledger_line_count
+        description: Number of posted ledger lines rolled up into this row — useful for sanity-checking volume.
+        tests:
+          - not_null

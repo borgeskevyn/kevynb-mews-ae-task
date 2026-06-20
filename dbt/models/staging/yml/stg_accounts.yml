@@ -1,0 +1,29 @@
+version: 2
+
+models:
+  - name: stg_accounts
+    description: One row per GL account. Drives P&L classification via `is_pl_account`.
+    columns:
+      - name: account_id
+        description: GL account code, primary key.
+        tests:
+          - unique
+          - not_null
+
+      - name: account_name
+        description: Human-readable name of the GL account.
+
+      - name: account_type
+        description: High-level classification of the account (Revenue, Expense, Asset, Liability).
+        tests:
+          - accepted_values:
+              arguments:
+                values: ["Revenue", "Expense", "Asset", "Liability"]
+
+      - name: reporting_group
+        description: Financial statement grouping the account rolls up to (e.g. Revenue, Expenses, Balance Sheet).
+
+      - name: is_pl_account
+        description: True for Revenue/Expense accounts; false for Balance Sheet accounts.
+        tests:
+          - not_null

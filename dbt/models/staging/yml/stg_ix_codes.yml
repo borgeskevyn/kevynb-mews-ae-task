@@ -1,0 +1,23 @@
+version: 2
+
+models:
+  - name: stg_ix_codes
+    description: One row per intercompany/IX code, categorised (Revenue, Service, Product, Region).
+    columns:
+      - name: ix_code_id
+        description: IX code, primary key.
+        tests:
+          - unique
+          - not_null
+
+      - name: ix_code_description
+        description: Human-readable name of the IX code.
+
+      - name: ix_code_category
+        description: Category the IX code belongs to (Revenue, Service, Product, Region).
+
+      - name: ix_code_created_date
+        description: Date the IX code was created.
+
+      - name: is_active
+        description: True if the IX code is currently active and in use.

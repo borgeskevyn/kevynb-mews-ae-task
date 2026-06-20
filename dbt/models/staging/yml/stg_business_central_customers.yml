@@ -1,0 +1,24 @@
+version: 2
+
+models:
+  - name: stg_business_central_customers
+    description: One row per Business Central (ERP) global customer record.
+    columns:
+      - name: business_central_customer_id
+        description: Business Central customer record ID, primary key.
+        tests:
+          - unique
+          - not_null
+
+      - name: customer_account_id
+        description: >
+          Cross-system account number. Not unique in the source — a small
+          number of account numbers appear on two BC customer records (e.g.
+          re-registered or merged accounts), so this is intentionally left
+          untested for uniqueness rather than silently deduplicated.
+
+      - name: customer_currency
+        description: Customer's billing/transacting currency as recorded in Business Central.
+
+      - name: country_code
+        description: Customer's country code as recorded in Business Central.

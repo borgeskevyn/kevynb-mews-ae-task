@@ -1,0 +1,20 @@
+version: 2
+
+models:
+  - name: stg_business_units
+    description: One row per business unit.
+    columns:
+      - name: business_unit_id
+        description: Business unit code, primary key.
+        tests:
+          - unique
+          - not_null
+
+      - name: business_unit_description
+        description: Human-readable name of the business unit.
+
+      - name: unit_type
+        description: Functional type of the business unit (e.g. Sales, Service, Admin).
+
+      - name: manager
+        description: Name of the manager responsible for the business unit.

@@ -1,0 +1,17 @@
+version: 2
+
+models:
+  - name: stg_entity_codes
+    description: One row per legal/reporting entity.
+    columns:
+      - name: entity_id
+        description: Legal/reporting entity code, primary key.
+        tests:
+          - unique
+          - not_null
+
+      - name: entity_description
+        description: Human-readable name of the entity.
+
+      - name: entity_created_date
+        description: Date the entity was set up in the source system.
