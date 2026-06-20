@@ -1,0 +1,169 @@
+version: 2
+
+sources:
+  - name: mock_data
+    description: Source tables loaded from generated mock data
+    database: proddb
+    schema: public
+    tables:
+      - name: salesforce_customers
+        description: Salesforce customer records (mock data)
+        columns:
+          - name: id
+            description: Unique Salesforce customer ID
+          - name: is_deleted
+            description: Deleted flag
+          - name: account_number
+            description: Account number
+          - name: name
+            description: Customer name
+          - name: billing_country
+            description: Billing country code
+          - name: capacity_s
+            description: Small capacity
+          - name: capacity_m
+            description: Medium capacity
+          - name: capacity_l
+            description: Large capacity
+
+      - name: business_central_global_customers
+        description: Business Central global customers (mock data)
+        columns:
+          - name: id
+            description: Unique BC customer ID
+          - name: account_number
+            description: Account number
+          - name: currency
+            description: Currency code
+          - name: country_code
+            description: Country code
+
+      - name: ledger
+        description: General ledger entries (mock data)
+        columns:
+          - name: id
+            description: Ledger entry ID
+          - name: journal_id
+            description: Journal entry ID
+          - name: account_number
+            description: Account number
+          - name: account_code
+            description: Account code
+          - name: date
+            description: Transaction date
+          - name: currency
+            description: Currency code
+          - name: amount
+            description: Amount in original currency
+          - name: ix_code
+            description: IX code
+          - name: entity_code
+            description: Entity code
+          - name: territory
+            description: Territory code
+          - name: business_unit
+            description: Business unit
+          - name: consolidation_group
+            description: Consolidation group
+          - name: is_adjustment_entry
+            description: Adjustment entry flag
+          - name: is_manual
+            description: Manual entry flag
+
+      - name: fx_rates
+        description: FX rates for all currencies to EUR (mock data)
+        columns:
+          - name: month
+            description: Month (YYYY-MM)
+          - name: currency
+            description: Currency code
+          - name: rate_to_eur
+            description: Rate to EUR
+
+      - name: journal_entries
+        description: Journal entry metadata (mock data)
+        columns:
+          - name: journal_id
+            description: Journal entry ID
+          - name: source_system
+            description: Source system
+          - name: posted_by
+            description: Who posted the entry
+          - name: status
+            description: Posting status
+          - name: posted_at
+            description: Posting timestamp
+
+      - name: accounts
+        description: Account dimension table (mock data)
+        columns:
+          - name: account_code
+            description: Account code
+          - name: account_name
+            description: Account name
+          - name: account_type
+            description: Account type
+          - name: reporting_group
+            description: Reporting group
+          - name: is_pl_account
+            description: Profit & Loss account flag
+
+      - name: entity_codes
+        description: Entity codes dimension table (mock data)
+        columns:
+          - name: entity_code
+            description: Entity code
+          - name: description
+            description: Entity description
+          - name: created_at
+            description: Date entity was created
+
+      - name: territories
+        description: Territories dimension table (mock data)
+        columns:
+          - name: territory
+            description: Territory code
+          - name: description
+            description: Territory description
+          - name: region
+            description: Region (EMEA, AMER, APAC)
+          - name: country_group
+            description: Country group (EU, Non-EU)
+
+      - name: business_units
+        description: Business units dimension table (mock data)
+        columns:
+          - name: business_unit
+            description: Business unit code
+          - name: description
+            description: Business unit description
+          - name: unit_type
+            description: Unit type (Sales, Service, Admin)
+          - name: manager
+            description: Manager name
+
+      - name: consolidation_groups
+        description: Consolidation groups dimension table (mock data)
+        columns:
+          - name: consolidation_group
+            description: Consolidation group code
+          - name: description
+            description: Group description
+          - name: group_type
+            description: Group type (Internal, External)
+          - name: lead_entity
+            description: Lead entity code
+
+      - name: ix_codes
+        description: IX codes dimension table (mock data)
+        columns:
+          - name: ix_code
+            description: IX code number
+          - name: description
+            description: IX code description
+          - name: category
+            description: IX code category (Revenue, Service, Product, Region)
+          - name: is_active
+            description: Active status flag
+          - name: created_date
+            description: Date IX code was created

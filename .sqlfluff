@@ -1,0 +1,128 @@
+[sqlfluff]
+verbose = 1
+nocolor = True
+dialect = databricks
+templater = jinja
+rules = all
+exclude_rules = aliasing.forbid,ambiguous.union,capitalisation.identifiers,layout.long_lines,references.consistent,references.keywords,structure.column_order,structure.distinct
+output_line_length = 80
+runaway_limit = 10
+ignore = None
+warnings = RF02,CV08,RF05,ST09
+ignore_templated_areas = False
+encoding = autodetect
+disable_noqa = False
+sql_file_exts = .sql
+fix_even_unparsable = False
+large_file_skip_char_limit = 0
+large_file_skip_byte_limit = 0
+processes = 0
+max_line_length = 80
+
+[sqlfluff:rules]
+allow_scalar = True
+single_table_references = consistent
+unquoted_identifiers_policy = all
+
+[sqlfluff:indentation]
+indented_joins = False
+indented_ctes = False
+indented_using_on = True
+indented_on_contents = True
+indented_then = True
+indented_then_contents = True
+allow_implicit_indents = True
+template_blocks_indent = False
+trailing_comments = before
+
+[sqlfluff:layout:type:comma]
+spacing_before = touch
+line_position = trailing
+
+[sqlfluff:templater]
+unwrap_wrapped_queries = True
+
+[sqlfluff:templater:jinja]
+apply_dbt_builtins = True
+library_path = sqlfluff_libs
+load_macros_from_path = macros
+
+[sqlfluff:templater:jinja:context]
+target={ "name": "playground" }
+
+# Aliasing Bundle
+[sqlfluff:rules:aliasing.table]
+aliasing = explicit
+
+[sqlfluff:rules:aliasing.column]
+aliasing = explicit
+
+[sqlfluff:rules:aliasing.expression]
+ignore_comment_lines = False
+
+
+# Ambiguous Bundle
+
+[sqlfluff:rules:ambiguous.join]
+fully_qualify_join_types = both
+
+[sqlfluff:rules:ambiguous.column_references]
+group_by_and_order_by_style = consistent
+
+
+# Capitalisation Bundle
+
+[sqlfluff:rules:capitalisation.keywords]
+capitalisation_policy = upper
+
+[sqlfluff:rules:capitalisation.functions]
+extended_capitalisation_policy = upper
+
+[sqlfluff:rules:capitalisation.literals]
+capitalisation_policy = upper
+
+[sqlfluff:rules:capitalisation.types]
+extended_capitalisation_policy = upper
+
+# Convention Bundle
+
+[sqlfluff:rules:convention.select_trailing_comma]
+select_clause_trailing_comma = forbid
+
+[sqlfluff:rules:convention.count_rows]
+prefer_count_1 = False
+prefer_count_0 = False
+
+[sqlfluff:rules:convention.terminator]
+multiline_newline = False
+require_final_semicolon = False
+
+[sqlfluff:rules:convention.quoted_literals]
+preferred_quoted_literal_style = single_quotes
+
+
+# Layout Bundle
+
+[sqlfluff:rules:layout.indent]
+hanging_indents = True
+indent_unit = space
+tab_space_size = 4
+
+
+# References Bundle
+
+[sqlfluff:rules:references.from]
+force_enable = False
+
+[sqlfluff:rules:references.consistent]
+force_enable = False
+single_table_references = consistent
+
+[sqlfluff:rules:references.keywords]
+unquoted_identifiers_policy = aliases
+
+
+# Structure Bundle
+
+[sqlfluff:rules:structure.subquery]
+forbid_subquery_in = join

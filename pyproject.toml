@@ -1,0 +1,84 @@
+[project]
+name = "mews-analytics-engineer"
+version = "0.1.0"
+description = "Analytical Engineer take-home: FP&A financial data modeling with dbt"
+requires-python = ">=3.10,<3.14"
+dependencies = [
+    "dbt-postgres>=1.8,<1.10",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pre-commit",
+]
+
+[tool.isort]
+line_length = 120
+profile = "black"
+py_version = 39
+
+[tool.autopep8]
+max_line_length = 120
+ignore = [
+    "E401",
+    "E402",
+    "W503",
+]
+
+in-place = true
+recursive = true
+aggressive = 3
+jobs = 0
+
+[tool.pylint]
+init-hook='import sys; sys.path.append(".")'
+py-version = [3, 9]
+max-line-length = 120
+good-names = [
+    "i",
+    "j",
+    "k",
+    "p",
+    "s",
+    "t",
+    "v",
+    "df",
+    "ex",
+    "main",
+    "Run",
+    "_",
+]
+
+disable = [
+    "arguments-differ",
+    "broad-exception-raised",
+    "consider-iterating-dictionary",
+    "consider-using-dict-items",
+    "duplicate-code",
+    "fixme",
+    "import-outside-toplevel",
+    "line-too-long",
+    "missing-class-docstring",
+    "missing-function-docstring",
+    "missing-module-docstring",
+    "no-else-break",
+    "no-else-return",
+    "no-member",
+    "protected-access",
+    "redefined-builtin",
+    "redefined-outer-name",
+    "too-many-arguments",
+    "too-many-instance-attributes",
+    "too-many-locals",
+    "too-many-statements",
+    "unnecessary-pass",
+    "unsubscriptable-object",
+    "use-dict-literal",
+    "use-list-literal",
+    "use-sequence-for-iteration",
+]
+
+check-quote-consistency = true
+max-module-lines = 99999
+single-line-if-stmt = true
+ignore-imports = false

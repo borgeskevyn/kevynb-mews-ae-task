@@ -1,0 +1,133 @@
+exclude: |
+  (
+    ^.*tech-ds-dbt.*
+    .github|
+    docs/
+  )
+repos:
+- repo: local
+  hooks:
+  - id: format-jinja-config-block
+    name: Format Jinja Config Block
+    description: Format Jinja config blocks in dbt SQL files
+    entry: python scripts/format_jinja_config.py
+    args: [--dir, models, snapshots]
+    language: python
+    pass_filenames: false
+    always_run: true
+  - id: apply-auditing-columns
+    name: Apply Auditing Columns
+    description: Apply auditing columns to all models
+    args: []
+    language: python
+    entry: python scripts/apply_auditing_to_models.py
+    pass_filenames: true
+  - id: validate-auditing-columns
+    name: Validate Auditing Columns
+    description: Validate auditing columns to all models
+    args: []
+    language: python
+    entry: python scripts/validate_auditing_exists_in_models.py
+    pass_filenames: false
+    always_run: true
+
+- repo: https://github.com/macisamuele/language-formatters-pre-commit-hooks
+  rev: v2.13.0
+  hooks:
+  - id: pretty-format-yaml
+    entry: pretty-format-yaml
+    language: python
+    types: [yaml]
+    args: [--autofix, --indent, '2', "--preserve-quotes"]
+
+- repo: https://github.com/pre-commit/pre-commit-hooks
+  rev: v4.6.0
+  hooks:
+  - id: check-ast
+  - id: check-added-large-files
+  - id: check-json
+  - id: check-toml
+  - id: check-case-conflict
+  - id: check-shebang-scripts-are-executable
+  - id: check-merge-conflict
+  - id: check-yaml
+  - id: detect-private-key
+  - id: end-of-file-fixer
+    exclude: ^docs/
+  - id: mixed-line-ending
+  - id: trailing-whitespace
+    exclude: ^docs/
+  - id: fix-byte-order-marker
+  - id: requirements-txt-fixer
+  - id: check-docstring-first
+  - id: debug-statements
+
+- repo: https://github.com/sqlfluff/sqlfluff
+  rev: 3.0.7
+  hooks:
+  - id: sqlfluff-lint
+    description: Lints .sql files with SQLFluff
+    additional_dependencies: [dbt-databricks]
+    types: [sql]
+    exclude: ^docs/
+
+- repo: https://github.com/asottile/add-trailing-comma
+  rev: v3.1.0
+  hooks:
+  - id: add-trailing-comma
+    description: Automatically adds trailing commas to calls and literals
+    files: ^(?!docs/)^models/
+    types: [python]
+    exclude: |
+      ^(
+        .github|
+        .pre-commit-config.yaml
+        docs/
+      )
+
+- repo: https://github.com/hhatto/autopep8
+  rev: v2.3.0
+  hooks:
+  - id: autopep8
+    description: Automatically formats Python code to conform to the PEP 8 style guide
+    files: ^(?!docs/)^models/
+    types: [python]
+
+- repo: https://github.com/pycqa/isort
+  rev: 5.13.2
+  hooks:
+  - id: isort
+    name: isort (python)
+    description: Sorts imports alphabetically and automatically separate into sections and by type
+    files: ^(?!docs/)^models/
+    types: [python]
+
+- repo: local
+  hooks:
+  - id: pylint
+    name: pylint
+    description: Statically analyses the code, checks for errors, enforces coding standard and makes suggestions
+    files: ^(?!docs/)^models/
+    entry: pylint
+    language: system
+    types: [python]
+
+- repo: https://github.com/dbt-checkpoint/dbt-checkpoint
+  rev: v2.0.1
+  hooks:
+  - id: dbt-deps
+    files: ^(?!docs/compiled/fno_dbt/models/finance/systems/businesscentral/staging/work/_columns\.yml$)^models/
+          # - id: dbt-docs-generate
+  - id: dbt-compile
+    files: ^(?!docs/)^models/
+    args: [--model-prefix, +, --]
+  - id: check-source-table-has-description
+    files: ^(?!docs/)^models/
+  - id: check-script-semicolon
+    files: ^(?!docs/)^models/
+  - id: check-script-has-no-table-name
+    files: ^(?!docs/)^models/
+  - id: check-script-ref-and-source
+    files: ^(?!docs/)^models/
+  - id: check-model-has-description
+    files: ^(?!docs/)^models/

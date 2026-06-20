@@ -1,0 +1,8 @@
+FROM node:18
+WORKDIR /app
+COPY src/ .
+RUN apt-get update && apt-get install -y python3 && \
+    python3 build_mock.py
+RUN npm init -y && npm install express pg
+EXPOSE 3000
+CMD ["node", "fno_data__server"]
