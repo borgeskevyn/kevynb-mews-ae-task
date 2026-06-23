@@ -29,6 +29,9 @@ manifest.json
 run_results.json
 profiles.yml
 
+# Generated mock data
+src/data/
+
 # Docker
 *.log
 docker-compose.override.yml
