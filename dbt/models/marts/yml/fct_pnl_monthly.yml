@@ -3,8 +3,9 @@ version: 2
 models:
   - name: fct_pnl_monthly
     description: >
-      One row per (entity, territory, month) — revenue, expense and net P&L
-      in EUR. Built only from posted journals and P&L (Revenue/Expense)
+      One row per (entity, territory, business unit, consolidation group, IX
+      code, Salesforce customer, month) — revenue, expense and net P&L in
+      EUR. Built only from posted journals and P&L (Revenue/Expense)
       accounts; Balance Sheet activity and unposted/error journals are
       excluded by construction.
     columns:
@@ -26,23 +27,62 @@ models:
                 to: ref('stg_territories')
                 field: territory_id
 
+      - name: business_unit_id
+        description: Business unit the P&L figures are attributed to.
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_business_units')
+                field: business_unit_id
+
+      - name: consolidation_group_id
+        description: Consolidation group the P&L figures roll up into.
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_consolidation_groups')
+                field: consolidation_group_id
+
+      - name: ix_code_id
+        description: Intercompany/IX code attributed to the P&L figures.
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_ix_codes')
+                field: ix_code_id
+
+      - name: salesforce_customer_id
+        description: >
+          Salesforce (CRM) customer the P&L figures are attributed to. ~89%
+          of ledger lines resolve to a Salesforce record; null means the
+          underlying customer is Business Central-only, not a data-quality
+          failure.
+        tests:
+          - relationships:
+              arguments:
+                to: ref('stg_salesforce_customers')
+                field: salesforce_customer_id
+
       - name: pnl_month
         description: First calendar day of the month this row summarises.
         tests:
           - not_null
 
       - name: revenue_eur
-        description: Sum of Revenue-account ledger lines for this entity/territory/month, in EUR.
+        description: Sum of Revenue-account ledger lines for this row's dimension combination and month, in EUR.
         tests:
           - not_null
 
       - name: expense_eur
-        description: Sum of Expense-account ledger lines for this entity/territory/month, in EUR.
+        description: Sum of Expense-account ledger lines for this row's dimension combination and month, in EUR.
         tests:
           - not_null
 
       - name: net_eur
-        description: revenue_eur minus expense_eur for this entity/territory/month.
+        description: revenue_eur minus expense_eur for this row's dimension combination and month.
         tests:
           - not_null
 
