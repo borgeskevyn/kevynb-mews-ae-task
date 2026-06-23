@@ -12,9 +12,9 @@ models:
 
       - name: customer_account_id
         description: >
-          Cross-system account number. Only ~10% of ledger lines' customer
-          account numbers resolve to a Salesforce record — most customer
-          activity in the ledger is not currently traceable to a CRM record.
+          Cross-system account number. ~89% of posted ledger lines' customer
+          account numbers resolve to a Salesforce record; the remainder are
+          Business Central customers with no corresponding CRM record.
         tests:
           - unique
           - not_null

@@ -56,9 +56,10 @@ models:
 
       - name: salesforce_customer_id
         description: >
-          Salesforce (CRM) customer the P&L figures are attributed to. Only
-          ~10% of ledger lines resolve to a Salesforce record, so null is
-          expected here, not a data-quality failure.
+          Salesforce (CRM) customer the P&L figures are attributed to. ~89%
+          of ledger lines resolve to a Salesforce record; null means the
+          underlying customer is Business Central-only, not a data-quality
+          failure.
         tests:
           - relationships:
               arguments:
