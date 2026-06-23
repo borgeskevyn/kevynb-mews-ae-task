@@ -28,6 +28,12 @@ accounts as (
 
 ),
 
+salesforce_customers as (
+
+    select * from {{ ref('stg_salesforce_customers') }}
+
+),
+
 posted_ledger as (
 
     select ledger.*
@@ -50,6 +56,8 @@ final as (
         posted_ledger.territory_id,
         posted_ledger.business_unit_id,
         posted_ledger.consolidation_group_id,
+        posted_ledger.ix_code_id,
+        salesforce_customers.salesforce_customer_id,
 
         -- Strings
         posted_ledger.transaction_currency,
@@ -75,6 +83,8 @@ final as (
         and posted_ledger.transaction_currency = fx_rates.currency
     left join accounts
         on posted_ledger.gl_account_id = accounts.account_id
+    left join salesforce_customers
+        on posted_ledger.customer_account_id = salesforce_customers.customer_account_id
 
 )
 

@@ -36,6 +36,20 @@ models:
       - name: consolidation_group_id
         description: Consolidation group the ledger line rolls up into.
 
+      - name: ix_code_id
+        description: Intercompany/IX code attributed to the ledger line.
+
+      - name: salesforce_customer_id
+        description: >
+          Salesforce (CRM) customer record matched on customer_account_id.
+          Only ~10% of ledger lines resolve to a Salesforce record, so null
+          here is expected, not a data-quality failure.
+        tests:
+          - relationships:
+              arguments:
+                to: ref('stg_salesforce_customers')
+                field: salesforce_customer_id
+
       - name: transaction_currency
         description: Currency the original ledger line amount is denominated in.
 

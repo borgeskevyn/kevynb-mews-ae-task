@@ -1,8 +1,9 @@
 {{ config(materialized='table') }}
 
--- Monthly P&L by entity and territory, in EUR. Only is_pl_account = true
--- lines are included — Balance Sheet accounts (Asset/Liability, e.g.
--- Cash/Accounts Payable) are out of scope for a P&L view.
+-- Monthly P&L by entity, territory, business unit, consolidation group,
+-- IX code and Salesforce customer, in EUR. Only is_pl_account = true lines
+-- are included — Balance Sheet accounts (Asset/Liability, e.g. Cash/Accounts
+-- Payable) are out of scope for a P&L view.
 with ledger_eur as (
 
     select * from {{ ref('int_ledger_posted_eur') }}
@@ -16,6 +17,10 @@ aggregated as (
         -- IDs
         entity_id,
         territory_id,
+        business_unit_id,
+        consolidation_group_id,
+        ix_code_id,
+        salesforce_customer_id,
 
         -- Dates
         date_trunc('month', ledger_date)::date as pnl_month,
@@ -26,7 +31,7 @@ aggregated as (
         count(*) as ledger_line_count
 
     from ledger_eur
-    group by 1, 2, 3
+    group by 1, 2, 3, 4, 5, 6, 7
 
 ),
 
@@ -36,6 +41,10 @@ final as (
         -- IDs
         entity_id,
         territory_id,
+        business_unit_id,
+        consolidation_group_id,
+        ix_code_id,
+        salesforce_customer_id,
 
         -- Dates
         pnl_month,
